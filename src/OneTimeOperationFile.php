@@ -2,10 +2,11 @@
 
 namespace TimoKoerber\LaravelOneTimeOperations;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use SplFileInfo;
-use TimoKoerber\LaravelOneTimeOperations\Models\Operation;
+use TimoKoerber\LaravelOneTimeOperations\Models\ModelFactory;
 
 class OneTimeOperationFile
 {
@@ -40,8 +41,8 @@ class OneTimeOperationFile
         return $this->classObject;
     }
 
-    public function getModel(): ?Operation
+    public function getModel(): ?Model
     {
-        return Operation::whereName($this->getOperationName())->first();
+        return ModelFactory::instance()->whereName($this->getOperationName())->first();
     }
 }

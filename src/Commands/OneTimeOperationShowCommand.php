@@ -5,7 +5,7 @@ namespace TimoKoerber\LaravelOneTimeOperations\Commands;
 use Illuminate\Support\Collection;
 use Throwable;
 use TimoKoerber\LaravelOneTimeOperations\Commands\Utils\OperationsLineElement;
-use TimoKoerber\LaravelOneTimeOperations\Models\Operation;
+use TimoKoerber\LaravelOneTimeOperations\Models\ModelFactory;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperationFile;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperationManager;
 
@@ -75,7 +75,7 @@ class OneTimeOperationShowCommand extends OneTimeOperationsCommand
 
     protected function getOperationLinesForOutput(): Collection
     {
-        $operationModels = Operation::all();
+        $operationModels = ModelFactory::instance()->all();
         $operationFiles = OneTimeOperationManager::getAllOperationFiles();
         $operationOutputLines = collect();
 

@@ -11,4 +11,6 @@ return [
     // Database Connection Name - Change the model connection, support for Multitenancy
     // Only change when you want to deviate from your system default repository
     'connection' => null,
+
+    'model' => \TimoKoerber\LaravelOneTimeOperations\Models\Operation::class,
 ];

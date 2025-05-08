@@ -3,6 +3,7 @@
 namespace TimoKoerber\LaravelOneTimeOperations;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use SplFileInfo;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
-use TimoKoerber\LaravelOneTimeOperations\Models\Operation;
+use TimoKoerber\LaravelOneTimeOperations\Models\ModelFactory;
 
 class OneTimeOperationManager
 {
@@ -44,7 +45,7 @@ class OneTimeOperationManager
         return $allOperationFiles->filter(function (SplFileInfo $operationFilepath) {
             $operation = self::getOperationNameFromFilename($operationFilepath->getBasename());
 
-            return Operation::whereName($operation)->doesntExist();
+            return ModelFactory::instance()->whereName($operation)->doesntExist();
         });
     }
 
@@ -67,12 +68,12 @@ class OneTimeOperationManager
         return File::getRequire($filepath);
     }
 
-    public static function getModelByName(string $operationName): ?Operation
+    public static function getModelByName(string $operationName): ?Model
     {
-        return Operation::whereName($operationName)->first();
+        return ModelFactory::instance()->whereName($operationName)->first();
     }
 
-    public static function getOperationFileByModel(Operation $operationModel): OneTimeOperationFile
+    public static function getOperationFileByModel(Model $operationModel): OneTimeOperationFile
     {
         $filepath = self::pathToFileByName($operationModel->name);
 

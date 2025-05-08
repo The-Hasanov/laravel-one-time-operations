@@ -3,10 +3,11 @@
 namespace TimoKoerber\LaravelOneTimeOperations\Commands;
 
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use TimoKoerber\LaravelOneTimeOperations\Jobs\OneTimeOperationProcessJob;
-use TimoKoerber\LaravelOneTimeOperations\Models\Operation;
+use TimoKoerber\LaravelOneTimeOperations\Models\ModelFactory;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperationFile;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperationManager;
 
@@ -90,7 +91,7 @@ class OneTimeOperationsProcessCommand extends OneTimeOperationsCommand implement
         return self::SUCCESS;
     }
 
-    protected function processOperationModel(Operation $operationModel): int
+    protected function processOperationModel(Model $operationModel): int
     {
         if (! $this->components->confirm('Operation was processed before. Process it again?')) {
             $this->components->info('Operation aborted');
@@ -155,7 +156,7 @@ class OneTimeOperationsProcessCommand extends OneTimeOperationsCommand implement
             return;
         }
 
-        Operation::storeOperation($operationFile->getOperationName(), $this->isAsyncMode($operationFile));
+        ModelFactory::instance()->storeOperation($operationFile->getOperationName(), $this->isAsyncMode($operationFile));
     }
 
     protected function dispatchOperationJob(OneTimeOperationFile $operationFile)
